@@ -1,60 +1,51 @@
 angular.module('waitStaffCalc', [] )
-  .controller('calcController', function($scope) {
+.controller('calcController', function($scope) {
 
-    function init() {
-        $scope.base = 0;
-        $scope.taxRate = 0;
-        $scope.subtotal = 0;
-        $scope.tipPer = 0;
-        $scope.tip = 0;
-        $scope.total = 0;
-        $scope.count = 0
-        $scope.tipTotal = 0;
-        $scope.averageTip = 0;
-        $scope.count = 0;
-        $scope.tipTotal = 0;
-        $scope.averageTip = 0;
-    }
+  function initMealDetails() {
+    $scope.mealDetails = {
+      base: 0,
+      taxRate: 0,
+      tipPercentage: 0
+    };
+  }
 
-    init();
+  function initMealTotals() {
+    $scope.totals = {
+      subtotal: 0,
+      tip: 0,
+      total: 0,
+      tipTotal: 0,
+      averageTip: 0,
+      count: 0
+    };
+  }
 
-    $scope.count = 0;
-    $scope.tipTotal = 0;
-    $scope.averageTip; 
-    
-    $scope.submit = function() {
-        $scope.base;
-        $scope.taxRate = $scope.taxRate * .01;
-        $scope.subtotal = ($scope.base * $scope.taxRate) + $scope.base;
-        $scope.tipPer;
-        $scope.tip = ($scope.tipPer / 100) * $scope.subtotal;
-        $scope.total = $scope.tip + $scope.subtotal;
-        $scope.count++;
-        $scope.tipTotal += $scope.tip;
-        $scope.averageTip = $scope.tipTotal / $scope.count;
+  initMealDetails();
+  initMealTotals();
 
-
-    }
-        
-    
-       $scope.reset = function() {
-        init();
-       } 
-
-       $scope.cancel = function() {
-        $scope.base = 0;
-        $scope.taxRate = 0;
-        $scope.tipPer = 0;
-        
-        }
-    
-
-  });
-  
+  $scope.submit = function() {
+    // update meal details
+    $scope.mealDetails.taxRate = $scope.mealDetails.taxRate * 0.01;
+    // calculate charges
+    $scope.totals.subtotal = ($scope.mealDetails.base * $scope.mealDetails.taxRate) + $scope.mealDetails.base;
+    $scope.totals.tip = ($scope.mealDetails.tipPercentage / 100) * $scope.totals.subtotal;
+    $scope.totals.total = $scope.totals.tip + $scope.totals.subtotal;
+    // calculate total earnings
+    $scope.totals.count++;
+    $scope.totals.tipTotal += $scope.totals.tip;
+    $scope.totals.averageTip = $scope.totals.tipTotal / $scope.totals.count;
+    // reset meal details
+    initMealDetails();
+  };
 
 
+  $scope.reset = function() {
+    initMealDetails();
+    initMealTotals();
+  };
 
+  $scope.cancel = function() {
+    initMealDetails();
+  };
 
-
- 
-    
+});
